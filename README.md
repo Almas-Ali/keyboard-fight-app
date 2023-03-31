@@ -1,6 +1,7 @@
 # Keyboard Typing Contest
 
-Created by Md. Almas Ali
+A Contest Management System App written in Python Flask. <br>
+Created by [Md. Almas Ali](https://github.com/Almas-Ali "Md. Almas Ali")
 
 ## Installations
 
@@ -14,8 +15,7 @@ python app.py
 
 ## URLs 
 
-`https://127.0.0.1:5000/` - Home route for users.
-`https://127.0.0.1:5000/submit` - Submit route for submitting response.
-`https://127.0.0.1:5000/rank` - Rank route for getting ranks.
-
+`https://127.0.0.1:5000/` - Home route for users. <br>
+`https://127.0.0.1:5000/submit` - Submit route for submitting response. <br>
+`https://127.0.0.1:5000/rank` - Rank route for getting ranks. <br>
 
