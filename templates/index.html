@@ -24,8 +24,14 @@
 
   <body>
 
+    <section>
+      <p class="bg-info text-dark py-3" align="center">
+        <strong id="timer"></strong>
+      </p>
+    </section>
+
     <div class="container mb-4">
-      <h1 align="center" class="my-3">Welcome to Computer Technology Keyboard Typing Contest</h1>
+      <h2 align="center" class="my-3">Welcome to Computer Technology Keyboard Typing Contest</h2>
 
       {% with messages = get_flashed_messages(with_categories=true) %}
       {% if messages %}
@@ -48,19 +54,17 @@
         <form action="/submit" method="post">
           <section class="form-group my-3">
             <label for="full_name">Your Full Name</label>
-            <input type="text" name="full_name" class="form-control" placeholder="John Doe" title="Full name here"
-              required />
+            <input type="text" name="full_name" class="form-control" placeholder="John Doe" title="Full name here" id="full_name" required />
           </section>
 
           <section class="form-group my-3">
             <label for="roll">Your Roll Number</label>
-            <input type="number" name="roll" class="form-control" placeholder="124352" title="Your roll number here"
-              required />
+            <input type="number" name="roll" class="form-control" placeholder="124352" title="Your roll number here" id="roll" required />
           </section>
 
           <section class="form-group my-3">
             <label for="section">Your Section</label>
-            <select name="section" class="form-control" title="Your Section Here" required>
+            <select name="section" class="form-control" title="Your Section Here" id="section" required>
               <option value="A">A Section</option>
               <option value="B">B Section</option>
             </select>
@@ -68,7 +72,7 @@
 
           <section class="form-group my-3">
             <label for="shift">Your Shift</label>
-            <select name="shift" class="form-control" title="Your Shift Here" required>
+            <select name="shift" class="form-control" title="Your Shift Here" id="shift" required>
               <option value="1">1st Shift</option>
               <option value="2">2nd Shift</option>
             </select>
@@ -76,15 +80,14 @@
 
           <section class="form-group my-3">
             <label for="unique_id">Your Unique ID</label>
-            <input type="text" name="unique_id" class="form-control" placeholder="ABE43" title="Full Unique ID here"
-              required />
+            <input type="text" name="unique_id" class="form-control" placeholder="ABE43" title="Full Unique ID here" id="unique_id" required />
           </section>
 
           <input id="response" name="response" hidden>
           <!-- This is a computer technology example testing system by Md. Almas Ali. -->
           <textarea id="mytextarea"></textarea>
 
-          <button type="submit" class="btn btn-primary my-3">Submit</button>
+          <button type="submit" class="btn btn-primary my-3" id="submit_btn">Submit</button>
         </form>
       </div>
     </div>
@@ -99,12 +102,7 @@
       crossorigin="anonymous"></script>
     <script src='https://cdn.tiny.cloud/1/no-api-key/tinymce/4/tinymce.min.js'></script>
     <script>
-      // tinymce.init({
-      //   selector: '#mytextarea',
-      //   height: 500,
-
-      // });
-
+      // TinyMCE Editor Configuration
       tinymce.init({
         selector: '#mytextarea',
         forced_root_block: false,
@@ -122,6 +120,41 @@
           });
         }
       });
+
+      // Countdown Timer Configuration
+      countdownTimer();
+
+      function countdownTimer() {
+        var countDownDate = new Date("{{ timer }}").getTime();
+
+        var x = setInterval(function () {
+          var now = new Date().getTime();
+          var distance = countDownDate - now;
+
+          var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+          var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+          var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+          var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+          document.getElementById("timer").innerHTML = days + "d " + hours + "h " + minutes + "m " + seconds + "s ";
+
+          if (distance < 0) {
+            // submit the response automatically if the timer is over and disable the form
+            document.getElementById("submit_btn").click();
+            
+            clearInterval(x);
+            document.getElementById("timer").innerHTML = "Contest Has Been Ended!";
+            document.getElementById("full_name").disabled = true;
+            document.getElementById("roll").disabled = true;
+            document.getElementById("section").disabled = true;
+            document.getElementById("shift").disabled = true;
+            document.getElementById("unique_id").disabled = true;
+            document.getElementById("submit_btn").disabled = true;
+
+            tinymce.activeEditor.setMode('readonly');
+          }
+        }, 1000);
+      }
 
     </script>
   </body>

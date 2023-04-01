@@ -1,5 +1,5 @@
 from peewee import *
-from datetime import datetime
+import datetime
 
 db = SqliteDatabase('sqlite.db')
 
@@ -21,7 +21,21 @@ class Contest(BaseModel):
     word_count = IntegerField(default=0)  # Word count of the response
 
     # Timestamp of submission
-    timestamp = DateTimeField(default=datetime.now())
+    timestamp = DateTimeField(default=datetime.datetime.now())
 
     class Meta:
         db_table = 'contest'
+
+
+class Timer(BaseModel):
+    # Selected time by the user (in seconds)
+    selected_time = IntegerField(default=0)
+    timestamp = DateTimeField(default=datetime.datetime.now())  # Timestamp of creation
+
+    def get_time(self):
+        _time = self.timestamp + datetime.timedelta(seconds=self.selected_time)
+        _time = _time.strftime('%Y-%m-%d %H:%M:%S')
+        return _time
+    
+    class Meta:
+        db_table = 'timer'

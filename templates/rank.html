@@ -32,8 +32,32 @@
         <a href="/" class="px-3 text-danger text-decoration-none">&larr; Back to home page</a>
       </nav>
     </header>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    <section class="flashes">
+      {% for type, message in messages %}
+      <div class="alert alert-{{ type }} alert-dismissible fade show py-3 mx-3 mt-2" role="alert">
+        <strong>
+          {{ message }}
+        </strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+      {% endfor %}
+    </section>
+    {% endif %}
+    {% endwith %}
+
     <div class="container my-3">
-      <h1 align="center">Contestants Rankings</h1>
+
+      <form action="/set-time" method="post" class="w-25">
+        <div class="input-group mb-3">
+          <input type="number" class="form-control" placeholder="Set time in seconds" name="time" required>
+          <button class="btn btn-outline-secondary" type="submit">Set</button>
+        </div>
+      </form>
+
+      <h2 align="center">Contestants Rankings</h2>
       <table id="rank_table">
         <thead>
           <tr>
@@ -57,7 +81,8 @@
             <td>{{ rank.shift }}</td>
             <td>{{ rank.word_count }}</td>
             <td>
-              <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal-{{ loop.index }}">
+              <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                data-bs-target="#exampleModal-{{ loop.index }}">
                 View
               </button>
             </td>
@@ -74,7 +99,7 @@
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                  
+
                   <section>
                     <h1 class="fs-5">Response of {{ rank.full_name }}</h1>
                     <p>{{ rank.response }}</p>
@@ -82,7 +107,7 @@
                       Word Count : {{ rank.word_count }}
                     </p>
                   </section>
-                  
+
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
