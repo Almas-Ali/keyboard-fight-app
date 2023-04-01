@@ -10,7 +10,6 @@ app.secret_key = b'secret-this-is-a-secret-key-24525-235-%^$%_@#%@_535NNVUbbijw_
 def home():
     # Get the latest timer
     timer = Timer.select().order_by(Timer.id.desc()).first().get_time()
-    print(timer, '\n\n\n')
     return render_template('index.html', timer=timer)
 
 
@@ -60,9 +59,6 @@ def set_timer():
         _timer = Timer(
             selected_time=selected_time,
             timestamp=datetime.datetime.now()
-        )
-        print(
-            _timer.__dict__
         )
         _timer.save()
 
