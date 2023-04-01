@@ -21,9 +21,6 @@ def submit():
         response: str = request.form['response']
 
         word_count: int = len(response.split(' '))
-        print(
-            '\n\n\n word_count: ', word_count, '\n\n\n'
-        )
 
         unique_id = request.form['unique_id']
 
