@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
 from models import db, Contest, Timer
-import datetime, time
+import datetime
 
 app = Flask(__name__)
 app.secret_key = b'secret-this-is-a-secret-key-24525-235-%^$%_@#%@_535NNVUbbijw_jigr'
@@ -9,8 +9,8 @@ app.secret_key = b'secret-this-is-a-secret-key-24525-235-%^$%_@#%@_535NNVUbbijw_
 @app.route('/')
 def home():
     # Get the latest timer
-    timer = Timer.select().order_by(Timer.timestamp.desc()).first().get_time()
-
+    timer = Timer.select().order_by(Timer.id.desc()).first().get_time()
+    print(timer, '\n\n\n')
     return render_template('index.html', timer=timer)
 
 
@@ -51,17 +51,24 @@ def rank():
     contest = Contest.select().order_by(Contest.word_count.desc())
     return render_template('rank.html', contest=contest)
 
+
 @app.route('/set-time', methods=['POST', 'GET'])
 def set_timer():
     if request.method == 'POST':
         selected_time = request.form['time']
-        
-        _timer = Timer(selected_time=selected_time)
+
+        _timer = Timer(
+            selected_time=selected_time,
+            timestamp=datetime.datetime.now()
+        )
+        print(
+            _timer.__dict__
+        )
         _timer.save()
 
         flash('Timer has been set successfully!', 'success')
         return redirect(url_for('home'))
-    
+
     flash('Something went wrong!', 'danger')
     return redirect(url_for('home'))
 
